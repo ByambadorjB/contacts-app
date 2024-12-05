@@ -8,6 +8,15 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { EditContactDialog } from "@/components/EditDialog";
 
+
+// Define the Contact interface
+interface Contact {
+  name: string;
+  email: string;
+  phone: string;
+  website: string;
+}
+
 export default function Home() {
   const { data, isLoading, error} = useQuery({
     queryKey: ["contacts"],
@@ -17,7 +26,7 @@ export default function Home() {
   const [selectedMenu, setSelectedMenu] = useState("Show Contacts");
   const [showContacts, setShowContacts] = useState(false);
 
-  const handleSave = (updatedContact: { name: string; email: string; phone: string; website: string }) => {
+  const handleSave = (updatedContact: Contact) => {
     console.log("Saved Contact:", updatedContact);
     // Handle the save logic, like making an API call to save the contact
   };
@@ -30,7 +39,7 @@ export default function Home() {
   };
 
   // Handle edit button click to select the contact
-  const handleEditClick = (contact: any) => {
+  const handleEditClick = (contact: Contact) => {
     setSelectedContact(contact); // Set the selected contact
     setIsDialogOpen(true); // Open the dialog
   };

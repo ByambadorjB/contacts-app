@@ -5,18 +5,11 @@ import {
     BookOpen,
   } from "lucide-react";
   import Link from "next/link";
-  import React, { useState } from "react";
-
- 
- 
+  import React from "react";
 
   
   export default function Sidebar({ selectedMenu, setSelectedMenu }: { selectedMenu: string, setSelectedMenu: React.Dispatch<React.SetStateAction<string>> }) {
 
-    
-    // const [selectedMenu, setSelectedMenu] = useState('Show Contacts')
-    
-  
     const links = [
       { name: "Show Contacts", icon: <Home className="h-4 w-4" />, href: "/"  },
       { name: "Create a Contact", icon: <Users className="h-4 w-4" />, href: "#"  },

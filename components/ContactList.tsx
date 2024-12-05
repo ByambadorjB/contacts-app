@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import * as Dialog from "@radix-ui/react-dialog"; // ShadCN dialog
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -11,8 +10,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
 import { EditContactDialog } from "./EditDialog";
+
+
+
 
 interface ContactCardProps {
   id: string;
@@ -24,7 +25,7 @@ interface ContactCardProps {
 
 interface ContactListProps {
   contacts: ContactCardProps[];
-  onEdit: (contact: any) => void; // Function to handle editing a contact
+  onEdit: (contact: ContactCardProps) => void; // Function to handle editing a contact
 }
 
 export const ContactList: React.FC<ContactListProps> = ({ contacts }) => {
