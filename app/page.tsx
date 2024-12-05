@@ -32,7 +32,7 @@ export default function Home() {
   };
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedContact, setSelectedContact] = useState<any>(null); // State to store the selected contact
+  const [selectedContact, setSelectedContact] = useState<Contact | null >(null); // State to store the selected contact
   
   const handleDialogClose = () => {
     setIsDialogOpen(false); // Close the dialog
