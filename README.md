@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Contacts App
+Installation and Setup
+To get the Contacts App up and running, follow these two steps:
 
-## Getting Started
+Install Dependencies:
+Run the following command to install all required dependencies:
 
-First, run the development server:
+bash
+Copy code
+npm install
+Run the Development Server:
+Once the dependencies are installed, run the development server:
 
-```bash
+bash
+Copy code
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This will start the app at http://localhost:3000.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Deployed Version
+You can also access the app directly via the deployed URL on Vercel:
+https://contacts-app-nextjs-typescipt-react.vercel.app/
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Features
+The app consists of a sidebar menu with selectable and changeable options. At this stage, only the "Show Contacts" feature has been implemented. Here’s what it currently includes:
 
-## Learn More
+Fetching Contacts:
+The app retrieves contacts (users) from the following API:
+https://jsonplaceholder.typicode.com/users
 
-To learn more about Next.js, take a look at the following resources:
+"Show Contacts" Button:
+Once you enter the "Show Contacts" page, you will see a button labeled "Show All Contacts".
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+When clicked, the button changes to "Hide Contacts".
+A table with user information will be displayed, showing the following details:
+ID
+Name
+Email
+Phone
+Website
+Actions (Edit and Delete buttons – though not fully functional yet)
+Edit Contact Dialog:
+When you click the Edit button, a dialog will appear with the following fields:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Name
+Email
+Phone
+Website
+Clicking Save will display an alert showing the form submission, but the edit functionality is not fully implemented yet.
 
-## Deploy on Vercel
+Future Development
+Other Menus: The remaining menu items like "Create a Contact", "Update a Contact", and "Delete a Contact" will be implemented in future stages.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
