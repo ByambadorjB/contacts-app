@@ -1,101 +1,112 @@
-import Image from "next/image";
+'use client'
+
+import { useQuery } from "@tanstack/react-query";
+import Sidebar from "@/components/ui/sidebar";
+import { ContactList } from "../components/ContactList";
+import { fetchContacts } from "@/utils/api";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { EditContactDialog } from "@/components/EditDialog";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const { data, isLoading, error} = useQuery({
+    queryKey: ["contacts"],
+    queryFn: fetchContacts,
+  });
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+  const [selectedMenu, setSelectedMenu] = useState("Show Contacts");
+  const [showContacts, setShowContacts] = useState(false);
+
+  const handleSave = (updatedContact: { name: string; email: string; phone: string; website: string }) => {
+    console.log("Saved Contact:", updatedContact);
+    // Handle the save logic, like making an API call to save the contact
+  };
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedContact, setSelectedContact] = useState<any>(null); // State to store the selected contact
+  
+  const handleDialogClose = () => {
+    setIsDialogOpen(false); // Close the dialog
+  };
+
+  // Handle edit button click to select the contact
+  const handleEditClick = (contact: any) => {
+    setSelectedContact(contact); // Set the selected contact
+    setIsDialogOpen(true); // Open the dialog
+  };
+
+
+  if(isLoading) return <p>Loading ....</p>
+  if(error) return <p>Error loading contacts</p>
+  
+  return (
+    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+      {/* Sidebar Section */}
+      <aside className="bg-blue-100 border-r shadow-md">
+        <Sidebar selectedMenu={selectedMenu} setSelectedMenu={setSelectedMenu} />
+      </aside>
+      <main className="p-6 bg-blue-50">
+        {/* Conditional Rendering for Entire Main Section */}
+        {selectedMenu === "Show Contacts" && (
+          <section className="p-2 shadow rounded-md border">
+            <header className="text-center mb-6">
+              <h1 className="text-3xl font-bold mb-4 text-blue-700">Contacts Page</h1>
+              {/* <ContactList contacts={data}/> */}
+              <Button 
+                onClick={() => setShowContacts((prev: boolean) => !prev)}
+                className="px-10 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
+              >
+                {showContacts ? "Hide Contacts" : "Show All Contacts"}
+              </Button>
+            </header>
+          </section>
+        )}
+        
+
+         {/* Conditional Rendering of Contact List */}
+
+        {showContacts && (
+          <section className=" p-2 shadow rounded-md border">
+             <ContactList contacts={data}
+             onEdit={handleEditClick} // Pass the onEdit function to ContactList
+             />
+
+             {/*Show the edit dialog if a contact is selected*/}
+             {selectedContact && isDialogOpen && (
+              <EditContactDialog
+                contact={selectedContact} // Pass the selected contact to the dialog
+                onSave={handleSave}
+                onClose={handleDialogClose}
+                isOpen={isDialogOpen}
+              />
+             )}
+          </section>
+        )}
+
+        {selectedMenu === "Create a Contact" && (
+          <header className="text-center mb-6">
+          <h1 className="text-3xl font-bold mb-4 text-blue-700">Create a Contact</h1>
+            {/* Add your form or content for creating a contact */}
+          </header>
+        )}
+
+        {selectedMenu === "Update a Contact" && (
+          <header className="text-center mb-6">
+          <h1 className="text-3xl font-bold mb-4 text-blue-700">Update a Contact</h1>
+            {/* Add your form or content for creating a contact */}
+          </header>
+        )}
+
+        {selectedMenu === "Delete a Contact" && (
+          <header className="text-center mb-6">
+          <h1 className="text-3xl font-bold mb-4 text-blue-700">Delete a Contact</h1>
+            {/* Add your form or content for creating a contact */}
+          </header>
+        )}
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      
     </div>
   );
 }
+
+
